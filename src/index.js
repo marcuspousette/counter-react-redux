@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import configureStore from './redux-store/configureStore';
+import Counter from './components/Counter';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const store = configureStore();
+console.log(store);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const render = () =>
+	ReactDOM.render(
+		<Counter
+			value={store.getState()}
+			onIncrement={() => store.dispatch({ type: 'INCREMENT' })}
+			onDecrement={() => store.dispatch({ type: 'DECREMENT' })}
+		/>,
+		document.getElementById('root')
+	);
+
+render();
+store.subscribe(render);
